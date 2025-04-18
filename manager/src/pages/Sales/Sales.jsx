@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import { FaDownload } from "react-icons/fa";
 
 const Sales = () => {
-    const [orders, setOrders] = useState([]);
+    const [allOrders, setAllOrders] = useState([]); // Store all orders
+    const [filteredOrders, setFilteredOrders] = useState([]); // Store filtered orders
     const [summary, setSummary] = useState(null);
     const [loading, setLoading] = useState(false);
     const [filter, setFilter] = useState("all");
@@ -12,21 +13,26 @@ const Sales = () => {
 
     useEffect(() => {
         fetchData();
-    }, [filter, dateRange]);
+    }, [filter]); // Only fetch when filter type changes, not date range
+
+    useEffect(() => {
+        // Apply date filtering client-side
+        applyFilters();
+    }, [dateRange, allOrders]);
 
     const fetchData = async () => {
         setLoading(true);
         try {
+            // Fetch all orders based on the time period filter (all, today, week, month)
             let url = `http://localhost:4000/api/sales/list?filter=${filter}`;
-            if (dateRange.startDate && dateRange.endDate) {
-                url += `&startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`;
-            }
-
+            
             const response = await fetch(url, {
                 headers: { "token": localStorage.getItem("token") }
             });
             const ordersData = await response.json();
-            processOrders(ordersData);
+            setAllOrders(ordersData);
+            
+            // Initial filtering will be applied by the useEffect
         } catch (error) {
             toast.error("Error fetching data!");
         } finally {
@@ -34,13 +40,31 @@ const Sales = () => {
         }
     };
 
-    const processOrders = (ordersData) => {
-        setOrders(ordersData);
+    const applyFilters = () => {
+        let result = [...allOrders];
         
-        const totalOrders = ordersData.length;
-        const totalAmount = ordersData.reduce((sum, order) => sum + order.amount, 0);
+        // Apply date range filter if both dates are provided
+        if (dateRange.startDate && dateRange.endDate) {
+            const startDate = new Date(dateRange.startDate);
+            const endDate = new Date(dateRange.endDate);
+            // Set endDate to the end of the day
+            endDate.setHours(23, 59, 59, 999);
+            
+            result = result.filter(order => {
+                const orderDate = new Date(order.date);
+                return orderDate >= startDate && orderDate <= endDate;
+            });
+        }
+        
+        setFilteredOrders(result);
+        generateSummary(result);
+    };
+
+    const generateSummary = (orders) => {
+        const totalOrders = orders.length;
+        const totalAmount = orders.reduce((sum, order) => sum + order.amount, 0);
         const averageOrderValue = totalOrders > 0 ? totalAmount / totalOrders : 0;
-        const paymentMethodSummary = ordersData.reduce((acc, order) => {
+        const paymentMethodSummary = orders.reduce((acc, order) => {
             const method = order.payment ? "Paid" : "Unpaid";
             acc[method] = (acc[method] || 0) + order.amount;
             return acc;
@@ -60,17 +84,32 @@ const Sales = () => {
                 body: JSON.stringify({ status: newStatus })
             });
             toast.success("Order status updated successfully!");
-            fetchData();
+            
+            // Update the status locally without refetching
+            setAllOrders(prevOrders => {
+                const updated = prevOrders.map(order => 
+                    order._id === orderId ? {...order, status: newStatus} : order
+                );
+                return updated;
+            });
         } catch (error) {
             toast.error("Failed to update order status!");
         }
+    };
+
+    const handleDateChange = (field, value) => {
+        setDateRange(prev => ({ ...prev, [field]: value }));
+    };
+
+    const resetDateFilter = () => {
+        setDateRange({ startDate: "", endDate: "" });
     };
 
     const downloadReport = () => {
         const headers = ["Date", "Transaction ID", "Customer", "Amount", "Status", "Payment Method"];
         const csvContent = [
             headers.join(","),
-            ...orders.map(order => [
+            ...filteredOrders.map(order => [
                 new Date(order.date).toLocaleDateString(),
                 order._id,
                 `${order.address.firstName} ${order.address.lastName}`,
@@ -103,12 +142,28 @@ const Sales = () => {
                     <label>Time Period:</label>
                     <select value={filter} onChange={(e) => setFilter(e.target.value)}>
                         <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
                     </select>
                 </div>
                 <div className="filter-group">
                     <label>Custom Date Range:</label>
-                    <input type="date" name="startDate" value={dateRange.startDate} onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))} />
-                    <input type="date" name="endDate" value={dateRange.endDate} onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))} />
+                    <input 
+                        type="date" 
+                        name="startDate" 
+                        value={dateRange.startDate} 
+                        onChange={(e) => handleDateChange("startDate", e.target.value)} 
+                    />
+                    <input 
+                        type="date" 
+                        name="endDate" 
+                        value={dateRange.endDate} 
+                        onChange={(e) => handleDateChange("endDate", e.target.value)} 
+                    />
+                    {(dateRange.startDate || dateRange.endDate) && (
+                        <button className="reset-btn" onClick={resetDateFilter}>Reset</button>
+                    )}
                 </div>
             </div>
 
@@ -135,22 +190,31 @@ const Sales = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map(order => (
-                                <tr key={order._id}>
-                                    <td>{new Date(order.date).toLocaleDateString()}</td>
-                                    <td>{`${order.address.firstName} ${order.address.lastName}`}</td>
-                                    <td>₹{order.amount?.toFixed(2)}</td>
-                                    <td>
-                                        <select value={order.status} onChange={(e) => handleStatusUpdate(order._id, e.target.value)}>
-                                            <option value="pending">Pending</option>
-                                            <option value="processing">Processing</option>
-                                            <option value="delivered">Delivered</option>
-                                            <option value="cancelled">Cancelled</option>
-                                        </select>
-                                    </td>
-                                    <td>{order.payment ? "Paid" : "Unpaid"}</td>
+                            {filteredOrders.length > 0 ? (
+                                filteredOrders.map(order => (
+                                    <tr key={order._id}>
+                                        <td>{new Date(order.date).toLocaleDateString()}</td>
+                                        <td>{`${order.address.firstName} ${order.address.lastName}`}</td>
+                                        <td>₹{order.amount?.toFixed(2)}</td>
+                                        <td>
+                                            <select 
+                                                value={order.status} 
+                                                onChange={(e) => handleStatusUpdate(order._id, e.target.value)}
+                                            >
+                                                <option value="pending">Pending</option>
+                                                <option value="processing">Processing</option>
+                                                <option value="delivered">Delivered</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                        </td>
+                                        <td>{order.payment ? "Paid" : "Unpaid"}</td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="5" className="no-orders">No orders found for selected filters</td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>
