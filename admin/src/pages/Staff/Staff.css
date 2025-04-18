@@ -1,0 +1,311 @@
+/* Ensure full-page coverage */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+
+.staff-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2, h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form styling */
+.form-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+input[type="file"] {
+    padding: 8px 0;
+}
+
+button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #357ab8;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.preview-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: block;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.action-buttons button {
+    margin-right: 5px;
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+/* Modal styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.modal-footer button {
+    margin-left: 10px;
+}
+
+/* Loading indicator */
+.loading {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+/* Main container */
+.staff-container {
+    width: 90%;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Page title */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form styling */
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-container input {
+    width: calc(33% - 10px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Ensure file input looks better */
+.form-container input[type="file"] {
+    width: calc(66% - 10px);
+}
+
+/* Add & Update button */
+.form-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #fff0ed;
+    color: black;
+    border: 1px solid #ed3d3d;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.form-container button:hover {
+    background-color: #fff0ed;
+    border-color: tomato;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+}
+
+table th {
+    background-color: #fff0ed;
+    border-color: tomato;
+    color: rgb(78, 47, 47);
+}
+
+table td img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Action buttons */
+button {
+    padding: 8px 18px;
+    margin-inline: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+button:nth-child(1) {
+    background-color: #f0ad4e; /* Edit button */
+    color: white;
+}
+
+button:nth-child(1):hover {
+    background-color: #ec971f;
+}
+
+button:nth-child(2) {
+    background-color: #d9534f; /* Delete button */
+    color: white;
+}
+
+button:nth-child(2):hover {
+    background-color: #c9302c;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .form-container input {
+        width: 100%;
+    }
+    
+    .form-container input[type="file"] {
+        width: 100%;
+    }
+
+    .form-container button {
+        width: 100%;
+    }
+
+    table th, table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
