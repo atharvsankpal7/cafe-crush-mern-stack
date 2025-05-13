@@ -1,5 +1,6 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js"
+import foodModel from "../models/foodModel.js";
 import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -10,7 +11,6 @@ const frontend_URL = 'http://localhost:5173';
 
 // Placing User Order for Frontend using stripe
 const placeOrder = async (req, res) => {
-
     try {
         const newOrder = new orderModel({
             userId: req.body.userId,
@@ -20,6 +20,14 @@ const placeOrder = async (req, res) => {
         })
         await newOrder.save();
         await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+
+        // Update order count for each food item
+        for (const item of req.body.items) {
+            await foodModel.findByIdAndUpdate(item._id, {
+                $inc: { orderCount: item.quantity },
+                lastOrdered: new Date()
+            });
+        }
 
         const line_items = req.body.items.map((item) => ({
             price_data: {
@@ -58,9 +66,8 @@ const placeOrder = async (req, res) => {
     }
 }
 
-// Placing User Order for Frontend using stripe
+// Placing User Order for Frontend using COD
 const placeOrderCod = async (req, res) => {
-
     try {
         const newOrder = new orderModel({
             userId: req.body.userId,
@@ -71,6 +78,14 @@ const placeOrderCod = async (req, res) => {
         })
         await newOrder.save();
         await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+
+        // Update order count for each food item
+        for (const item of req.body.items) {
+            await foodModel.findByIdAndUpdate(item._id, {
+                $inc: { orderCount: item.quantity },
+                lastOrdered: new Date()
+            });
+        }
 
         res.json({ success: true, message: "Order Placed" });
 
@@ -109,7 +124,6 @@ const updateStatus = async (req, res) => {
     } catch (error) {
         res.json({ success: false, message: "Error" })
     }
-
 }
 
 const verifyOrder = async (req, res) => {
@@ -126,7 +140,6 @@ const verifyOrder = async (req, res) => {
     } catch (error) {
         res.json({ success: false, message: "Not  Verified" })
     }
-
 }
 
 export { placeOrder, listOrders, userOrders, updateStatus, verifyOrder, placeOrderCod }

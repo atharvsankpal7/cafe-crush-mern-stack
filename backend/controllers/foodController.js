@@ -4,7 +4,7 @@ import fs from 'fs'
 // all food list
 const listFood = async (req, res) => {
     try {
-        const foods = await foodModel.find()
+        const foods = await foodModel.find().sort({ orderCount: -1 })
         
         res.json({ success: true, data: foods })
     } catch (error) {
@@ -26,6 +26,7 @@ const addFood = async (req, res) => {
             price: req.body.price,
             category: req.body.category,
             image: req.file.filename,
+            orderCount: 0
         })
 
         await food.save();
@@ -77,4 +78,18 @@ const updateAvailable = async (req, res) => {
     }
 }
 
-export { listFood, addFood, removeFood, updateAvailable };
+// Get recommended foods
+const getRecommendedFood = async (req, res) => {
+    try {
+        const recommendedFoods = await foodModel.find({ available: true })
+            .sort({ orderCount: -1, lastOrdered: -1 })
+            .limit(8);
+        
+        res.json({ success: true, data: recommendedFoods });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error" });
+    }
+}
+
+export { listFood, addFood, removeFood, updateAvailable, getRecommendedFood };
