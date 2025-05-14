@@ -11,6 +11,8 @@ import salesRouter from "./routes/salesRoutes.js";
 import stockRouter from "./routes/stockRoutes.js";
 import restaurantRouter from "./routes/restaurantRoutes.js"
 import reviewRouter from "./routes/reviewRoute.js"
+import tableRouter from "./routes/tableRoute.js"
+import { initializeTables } from "./controllers/tableController.js"
 
 // app config
 const app = express()
@@ -27,6 +29,7 @@ app.use(express.urlencoded({limit: '100mb', extended: true}))
 
 // db connection
 connectDB()
+initializeTables()
 
 // api endpoints
 app.use("/api/user", userRouter)
@@ -39,6 +42,7 @@ app.use("/api/sales", salesRouter)
 app.use("/api/stock", stockRouter)
 app.use("/api/restaurant", restaurantRouter)
 app.use("/api/review", reviewRouter)
+app.use("/api/table", tableRouter)
 
 app.get("/", (req, res) => {
     res.send("API Working")
