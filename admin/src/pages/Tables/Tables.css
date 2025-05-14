@@ -1,0 +1,129 @@
+.tables-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tables-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.table-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.table-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.bg-green-100 {
+    background-color: #d1fae5;
+}
+
+.bg-yellow-100 {
+    background-color: #fef3c7;
+}
+
+.bg-red-100 {
+    background-color: #fee2e2;
+}
+
+.text-green-800 {
+    color: #065f46;
+}
+
+.text-yellow-800 {
+    color: #92400e;
+}
+
+.text-red-800 {
+    color: #991b1b;
+}
+
+.table-info {
+    margin-bottom: 20px;
+}
+
+.table-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.table-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.table-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.approve-btn {
+    background-color: #10b981;
+    color: white;
+}
+
+.approve-btn:hover {
+    background-color: #059669;
+}
+
+.reject-btn {
+    background-color: #ef4444;
+    color: white;
+}
+
+.reject-btn:hover {
+    background-color: #dc2626;
+}
+
+.complete-btn {
+    background-color: #6366f1;
+    color: white;
+    width: 100%;
+}
+
+.complete-btn:hover {
+    background-color: #4f46e5;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .tables-grid {
+        grid-template-columns: 1fr;
+    }
+}

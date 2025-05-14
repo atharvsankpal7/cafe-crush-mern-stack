@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import Sales from "./pages/Sales/Sales"
 import Restaurants from "./pages/Restaurants/Restaurants"
 import Reviews from './pages/Reviews/Reviews'
+import Tables from './pages/Tables/Tables'
 
 // Protected Layout Component
 const ProtectedLayout = () => {
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="sales" element={<Sales />} />
           <Route path="restaurants" element={<Restaurants />} />
           <Route path="reviews" element={<Reviews />} />
+          <Route path="tables" element={<Tables />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

@@ -31,12 +31,14 @@ const Sidebar = () => {
             <img src={assets.order_icon} alt="" />
             <p>Staff</p>
         </NavLink>
+        <NavLink to='/tables' className="sidebar-option">
+            <img src={assets.order_icon} alt="" />
+            <p>Tables</p>
+        </NavLink>
         <NavLink to='/review' className="sidebar-option">
             <img src={assets.order_icon} alt="" />
             <p>Reviews</p>
         </NavLink>
-
-        
       </div>
     </div>
   )

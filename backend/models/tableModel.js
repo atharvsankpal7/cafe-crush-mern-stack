@@ -25,6 +25,11 @@ const tableSchema = new mongoose.Schema({
     duration: {
         type: Number, // Duration in minutes
         default: 120 // Default 2 hours
+    },
+    status: {
+        type: String,
+        enum: ['available', 'pending', 'booked', 'completed'],
+        default: 'available'
     }
 });
 

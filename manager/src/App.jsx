@@ -8,11 +8,12 @@ import Orders from './pages/Orders/Orders'
 import StockManagement from './pages/StockManagement/StockManagement'
 import Login from './pages/Login/Login'
 import Staff from './pages/Staff/Staff'
+import Tables from './pages/Tables/Tables'
 import NotFound from './pages/NotFound/NotFound'
 import Reviews from './pages/Reviews/Reviews'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import Sales from '../../admin/src/pages/Sales/Sales'
+import Sales from './pages/Sales/Sales'
 
 // Protected Layout Component
 const ProtectedLayout = () => {
@@ -49,8 +50,8 @@ const App = () => {
           <Route path="stock-management" element={<StockManagement />} />
           <Route path="sales" element={<Sales />} />
           <Route path="staff" element={<Staff />} />
+          <Route path="tables" element={<Tables />} />
           <Route path="review" element={<Reviews />} />
-
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
