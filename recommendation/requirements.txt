@@ -1,0 +1,6 @@
+flask
+scikit-surprise
+flask-cors
+pandas
+numpy
+pymongo
